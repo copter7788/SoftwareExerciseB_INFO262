@@ -1,0 +1,10 @@
+Human,Jira,24,65.1,153.4
+Human,Manop,36,62.6,195.1
+Student,Kanya,47,65.4,184.2,1
+Human,Tida,21,99.9,159.0
+Human,Vichai,21,85.0,187.0
+Human,Fah,60,75.3,178.4
+Human,Phailin,60,84.8,185.5
+Human,Suda,44,64.5,161.9
+Human,Chaiyut,48,55.8,190.2
+Student,Lamai,22,63.9,168.3,2
