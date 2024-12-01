@@ -14,7 +14,7 @@ public class Calculator extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Display field setup
+        // Display field
         displayField.setFont(new Font("Arial", Font.BOLD, 60));
         displayField.setHorizontalAlignment(JTextField.RIGHT);
         displayField.setEditable(false);
@@ -23,13 +23,13 @@ public class Calculator extends JFrame {
         displayField.setBorder(BorderFactory.createEmptyBorder(60, 10, 10, 10));
         add(displayField, BorderLayout.NORTH);
 
-        // Buttons panel setup
+        // Button panel
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(6, 4, 10, 10));
         buttonPanel.setBackground(Color.DARK_GRAY);
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Button labels
+        // Labels for buttons
         String[] buttonLabels = {
             "sin", "cos", "tan", "|x|",
             "^", "√x", ")", "C",
@@ -39,7 +39,7 @@ public class Calculator extends JFrame {
             "0", ".", "/", "="
         };
 
-        // Add buttons to panel
+        // Add buttons
         for (String label : buttonLabels) {
             JButton button = new JButton(label);
             button.setFont(new Font("Arial", Font.BOLD, 20));
@@ -47,15 +47,14 @@ public class Calculator extends JFrame {
             button.setForeground(Color.WHITE);
             button.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 4));
 
-            // Set background color for buttons but it's not working for some reason :(
+            // Set colors
             if (label.equals("=")) {
-                button.setBackground(Color.BLUE); // Blue for "="
-                button.setForeground(Color.WHITE); // White text
-            } else if (label.equals("√x") || label.equals("C") || label.equals("^") || label.equals(")") ||
-                       label.equals("sin") || label.equals("cos") || label.equals("tan") || label.equals("|x|")) {
-                button.setBackground(Color.DARK_GRAY); // Dark gray for special buttons
+                button.setBackground(Color.BLUE);
+                button.setForeground(Color.WHITE);
+            } else if ("√xC^)sin cos tan |x|".contains(label)) {
+                button.setBackground(Color.DARK_GRAY);
             } else {
-                button.setBackground(new Color(50, 50, 50)); // Default gray for other buttons
+                button.setBackground(new Color(50, 50, 50));
             }
 
             button.addActionListener(new ButtonClickListener());
@@ -70,17 +69,18 @@ public class Calculator extends JFrame {
         public void actionPerformed(ActionEvent e) {
             String command = ((JButton) e.getSource()).getText();
 
+            // Action handler
             switch (command) {
-                case "C": // Clear
+                case "C": // Clear all
                     expression.setLength(0);
                     displayField.setText("");
                     break;
-                case "=": // Evaluate
+                case "=": // Solve stuff
                     try {
                         double result = evaluateExpression(expression.toString());
                         displayField.setText(expression + " = " + result);
                         expression.setLength(0);
-                        expression.append(result); // Store result for further calculations
+                        expression.append(result);
                     } catch (Exception ex) {
                         displayField.setText("Error");
                         expression.setLength(0);
@@ -111,7 +111,7 @@ public class Calculator extends JFrame {
                     expression.append(" abs(");
                     displayField.setText(expression.toString());
                     break;
-                default: // Numbers, operators, and decimal point
+                default: // Numbers/operators
                     expression.append(command);
                     displayField.setText(expression.toString());
                     break;
@@ -119,16 +119,17 @@ public class Calculator extends JFrame {
         }
     }
 
-    // Evaluate mathematical expressions using Shunting-yard and Reverse Polish Notation (RPN)
+    // Parse and calculate
     private double evaluateExpression(String exp) {
         exp = exp.replace("sqrt", "√")
                  .replace("sin", "s")
                  .replace("cos", "c")
                  .replace("tan", "t")
-                 .replace("abs", "|"); // Simplify for easier parsing
+                 .replace("abs", "|");
         return evaluateRPN(toRPN(exp));
     }
 
+    // Convert to postfix
     private String toRPN(String exp) {
         StringBuilder output = new StringBuilder();
         Stack<Character> operators = new Stack<>();
@@ -137,13 +138,11 @@ public class Calculator extends JFrame {
             char c = exp.charAt(i);
 
             if (Character.isDigit(c) || c == '.') {
-                // Add numbers to output
                 output.append(c);
             } else if ("√^sct|".indexOf(c) != -1) {
                 operators.push(c);
                 output.append(" ");
             } else if ("+-*/".indexOf(c) != -1) {
-                // Pop higher precedence operators
                 while (!operators.isEmpty() && precedence(operators.peek()) >= precedence(c)) {
                     output.append(" ").append(operators.pop());
                 }
@@ -152,15 +151,13 @@ public class Calculator extends JFrame {
             } else if (c == '(') {
                 operators.push(c);
             } else if (c == ')') {
-                // Pop until '('
                 while (!operators.isEmpty() && operators.peek() != '(') {
                     output.append(" ").append(operators.pop());
                 }
-                operators.pop(); // Remove '('
+                operators.pop();
             }
         }
 
-        // Pop remaining operators
         while (!operators.isEmpty()) {
             output.append(" ").append(operators.pop());
         }
@@ -168,6 +165,7 @@ public class Calculator extends JFrame {
         return output.toString();
     }
 
+    // Evaluate postfix
     private double evaluateRPN(String rpn) {
         Stack<Double> stack = new Stack<>();
         String[] tokens = rpn.split(" ");
@@ -175,11 +173,11 @@ public class Calculator extends JFrame {
         for (String token : tokens) {
             if (token.isEmpty()) continue;
 
-            if (token.matches("-?\\d+(\\.\\d+)?")) { // Numbers
+            if (token.matches("-?\\d+(\\.\\d+)?")) {
                 stack.push(Double.parseDouble(token));
             } else {
                 double b = stack.pop();
-                double a = stack.isEmpty() ? 0 : stack.pop(); // Unary operators like sqrt
+                double a = stack.isEmpty() ? 0 : stack.pop();
                 switch (token) {
                     case "+": stack.push(a + b); break;
                     case "-": stack.push(a - b); break;
@@ -197,6 +195,7 @@ public class Calculator extends JFrame {
         return stack.pop();
     }
 
+    // Operator priority
     private int precedence(char operator) {
         switch (operator) {
             case '+': case '-': return 1;
