@@ -1,5 +1,4 @@
 // hw 4.1
-// 4.2 --> https://github.com/copter7788/SoftwareExerciseB_INFO262/blob/main/HW4/MathMethods.java
 public class MathMethods {
     public static double calculateFirst(double x, double y) {
         return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));

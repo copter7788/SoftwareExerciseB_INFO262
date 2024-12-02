@@ -1,4 +1,5 @@
 // hw 4.2 
+// go to hw 4.1 --> https://github.com/copter7788/SoftwareExerciseB_INFO262/blob/main/HW4/MathMethods.java
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
