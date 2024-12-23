@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame implements Runnable {
-    private int fps = 120; // ค่า FPS เริ่มต้น
+    private int fps = 120; // ค่า FPS 
     private boolean isContinuousMode = false; // โหมดเล่นต่อเนื่อง
     private boolean isRanMode = false; // โหมดเล่นต่อเนื่อง
     private JPanel contentPane;
@@ -19,7 +19,7 @@ public class GUI extends JFrame implements Runnable {
     private Font font;
     private int widthOfMessage;
     private int pointer;
-    private int speed = 10;
+    private int speed = 3;
     private Thread thread;
 
     private final int widthOfDisplayPanel = 900;

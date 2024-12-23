@@ -129,7 +129,7 @@ public class EventProcessor implements ActionListener {
     }
 
     private void startContinuousMode() {
-        System.err.println("startContinuousMode");
+        System.err.println("startContinuousMode"); // debug
         ownerGUI.setContinuousMode(true); // เปิดโหมด連続
         continuousThread = new Thread(() -> {
             while (ownerGUI.isContinuousMode() && ownerGUI.isRunning()) {
@@ -164,7 +164,7 @@ private void toggleRanMode() {
 }
 
 private void startRanMode() {
-    System.err.println("startRanMode");
+    System.err.println("startRanMode"); // debug
     ownerGUI.setRanMode(true); // เปิดโหมด連続
     ranThread = new Thread(() -> {
         while (ownerGUI.isRanMode() && ownerGUI.isRunning()) {
